@@ -3,3 +3,9 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# 试验数据（ZoneTree 曲线库）：体积大、属于现场数据，不进版本库
+StorageData/
+
+# 运行日志（排查"进程不退出 / 数据没落盘"用的启动退出日志）
+logs/

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -6,12 +6,8 @@ using Prototype.UI.ViewModels;
 
 namespace Prototype.UI;
 
-/// <summary>
-/// Given a view model, returns the corresponding view if possible.
-/// </summary>
-[RequiresUnreferencedCode(
-    "Default implementation of ViewLocator involves reflection which may be trimmed away.",
-    Url = "https://docs.avaloniaui.net/docs/concepts/view-locator")]
+//按约定"ViewModel"→"View"反射找视图。Avalonia 模板自带，没动过
+[RequiresUnreferencedCode("Default implementation of ViewLocator involves reflection which may be trimmed away.", Url = "https://docs.avaloniaui.net/docs/concepts/view-locator")]
 public class ViewLocator : IDataTemplate
 {
     public Control? Build(object? param)

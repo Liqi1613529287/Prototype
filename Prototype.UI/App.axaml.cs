@@ -1,16 +1,17 @@
+﻿using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
-using Prototype.UI.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using Prototype.UI.Views;
 
 namespace Prototype.UI;
 
+//Avalonia 应用入口。主窗口从 DI 取，其它没什么
 public partial class App : Application
 {
+    public static IServiceProvider ServiceProvider { get; set; } = null!;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -18,12 +19,11 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (ApplicationLifetime
+            is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            desktop.MainWindow =
+                ServiceProvider.GetRequiredService<MainWindow>();
         }
 
         base.OnFrameworkInitializationCompleted();

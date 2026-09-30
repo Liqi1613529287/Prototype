@@ -1,20 +1,66 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Prototype.UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="600"
+        Width="980" Height="600"
         x:Class="Prototype.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Prototype.UI">
+        Title="{Binding Title}">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal"
+                    Spacing="6"
+                    Margin="14,10,14,0">
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="13"
+                       Text="{Binding Title}"/>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock VerticalAlignment="Center" Margin="14,0,0,0" Text="起始"/>
+            <TextBox Name="FromBox" Width="92"/>
+
+            <TextBlock VerticalAlignment="Center" Text="结束"/>
+            <TextBox Name="ToBox" Width="92"/>
+
+            <Button Name="QueryButton" Content="查询历史"/>
+            <Button Name="LiveButton" Content="回到实时"/>
+
+            <TextBlock Name="StatusText"
+                       VerticalAlignment="Center"
+                       Margin="8,0,0,0"
+                       FontSize="12"/>
+        </StackPanel>
+
+        <!-- 健康指示两行。DockPanel 里先声明的 Dock=Bottom 贴最底、后声明的叠在它上方，
+             所以屏幕上从上往下是：链路积压 → 帧指标。
+
+             上一行 · 每条通道一段链路读数：源积压 / 丢弃 / 该通道每条下游队列的积压。
+             判据看**源积压**：接近 0 说明分发器跟得上采集、卡的是消费端；
+             一路涨到 10 万那就跟界面无关，是某个消费者把整条链堵住了，
+             再看后面哪条下游队列在涨。
+
+             最底一行 · 当前这一页的 帧间隔 / 取数 / 渲染 / 绘制点数 / 窗口 / 数据滞后。
+             两行都绑到 VM 的普通属性，不去点 XAML 命名字段——那个字段由源生成器
+             在内存里产出、不落盘，IDE 分析器偶尔解析不到，会误报"无法解析符号"。 -->
+        <TextBlock DockPanel.Dock="Bottom"
+                   Margin="14,2,14,8"
+                   FontSize="11"
+                   Opacity="0.75"
+                   Text="{Binding PerfText}"/>
+
+        <TextBlock DockPanel.Dock="Bottom"
+                   Margin="14,4,14,0"
+                   FontSize="11"
+                   Opacity="0.6"
+                   TextWrapping="Wrap"
+                   Text="{Binding PipelineText}"/>
+
+        <!-- 图表页：标签页由 MainWindow 的代码照图表清单动态添加，这里只有一个空壳。
+             装配几张图就出来几页，XAML 里没有任何一处写死图表名。 -->
+        <TabControl Name="ChartTabs" Margin="8,8,8,0"/>
+    </DockPanel>
 
 </Window>

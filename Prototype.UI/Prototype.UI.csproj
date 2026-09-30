@@ -22,5 +22,13 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.1.26425.128" />
+        <PackageReference Include="ScottPlot.Avalonia" Version="5.1.59" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Prototype.Core\Prototype.Core.csproj" />
+      <ProjectReference Include="..\Prototype.Hosting\Prototype.Hosting.csproj" />
+      <ProjectReference Include="..\Prototype.Storage\Prototype.Storage.csproj" />
     </ItemGroup>
 </Project>
